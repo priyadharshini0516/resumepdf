@@ -21,6 +21,390 @@ except Exception:
     HAS_GROQ = False
 
 # ──────────────────────────────────────────────────────────────────────────────
+# Custom CSS Styling
+# ──────────────────────────────────────────────────────────────────────────────
+def load_custom_css():
+    st.markdown("""
+    <style>
+    /* Import Google Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    
+    /* Root variables for consistent theming */
+    :root {
+        --primary-color: #667eea;
+        --primary-dark: #5a67d8;
+        --secondary-color: #f093fb;
+        --accent-color: #4facfe;
+        --success-color: #48bb78;
+        --warning-color: #ed8936;
+        --error-color: #f56565;
+        --background-light: #f8fafc;
+        --background-card: #ffffff;
+        --text-primary: #2d3748;
+        --text-secondary: #718096;
+        --border-light: #e2e8f0;
+        --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.06);
+        --shadow-medium: 0 8px 25px rgba(0, 0, 0, 0.1);
+        --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        --gradient-accent: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    }
+    
+    /* Main app styling */
+    .stApp {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        min-height: 100vh;
+    }
+    
+    /* Header styling */
+    h1 {
+        background: var(--gradient-primary);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-align: center;
+        font-weight: 700;
+        font-size: 2.5rem !important;
+        margin-bottom: 2rem !important;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    /* Sidebar styling */
+    .css-1d391kg {
+        background: var(--background-card);
+        border-radius: 15px;
+        box-shadow: var(--shadow-soft);
+        padding: 1.5rem;
+        margin: 1rem;
+    }
+    
+    /* Card-like containers */
+    .stContainer > div {
+        background: var(--background-card);
+        border-radius: 15px;
+        padding: 2rem;
+        margin: 1rem 0;
+        box-shadow: var(--shadow-soft);
+        border: 1px solid var(--border-light);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .stContainer > div:hover {
+        box-shadow: var(--shadow-medium);
+        transform: translateY(-2px);
+    }
+    
+    /* Button styling */
+    .stButton > button {
+        background: var(--gradient-primary);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        padding: 0.75rem 2rem;
+        font-weight: 500;
+        font-size: 1rem;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+    
+    .stButton > button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        background: var(--gradient-secondary);
+    }
+    
+    .stButton > button:active {
+        transform: translateY(0);
+    }
+    
+    /* Secondary button styling */
+    .stButton > button[kind="secondary"] {
+        background: var(--gradient-accent);
+        box-shadow: 0 4px 15px rgba(79, 172, 254, 0.3);
+    }
+    
+    .stButton > button[kind="secondary"]:hover {
+        box-shadow: 0 8px 25px rgba(79, 172, 254, 0.4);
+    }
+    
+    /* Input styling */
+    .stTextInput > div > div > input {
+        border: 2px solid var(--border-light);
+        border-radius: 12px;
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        background: var(--background-card);
+    }
+    
+    .stTextInput > div > div > input:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        outline: none;
+    }
+    
+    /* Selectbox styling */
+    .stSelectbox > div > div {
+        border-radius: 12px;
+        border: 2px solid var(--border-light);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .stSelectbox > div > div:focus-within {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+    
+    /* File uploader styling */
+    .stFileUploader > div {
+        border: 2px dashed var(--primary-color);
+        border-radius: 15px;
+        padding: 2rem;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .stFileUploader > div:hover {
+        border-color: var(--primary-dark);
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+        transform: translateY(-2px);
+    }
+    
+    /* Success/Info/Warning/Error messages */
+    .stAlert {
+        border-radius: 12px;
+        border: none;
+        padding: 1rem 1.5rem;
+        margin: 1rem 0;
+    }
+    
+    .stSuccess {
+        background: linear-gradient(135deg, rgba(72, 187, 120, 0.1) 0%, rgba(72, 187, 120, 0.05) 100%);
+        border-left: 4px solid var(--success-color);
+    }
+    
+    .stInfo {
+        background: linear-gradient(135deg, rgba(79, 172, 254, 0.1) 0%, rgba(79, 172, 254, 0.05) 100%);
+        border-left: 4px solid var(--accent-color);
+    }
+    
+    .stWarning {
+        background: linear-gradient(135deg, rgba(237, 137, 54, 0.1) 0%, rgba(237, 137, 54, 0.05) 100%);
+        border-left: 4px solid var(--warning-color);
+    }
+    
+    .stError {
+        background: linear-gradient(135deg, rgba(245, 101, 101, 0.1) 0%, rgba(245, 101, 101, 0.05) 100%);
+        border-left: 4px solid var(--error-color);
+    }
+    
+    /* Chat message styling */
+    .stChatMessage {
+        background: var(--background-card);
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin: 1rem 0;
+        box-shadow: var(--shadow-soft);
+        border: 1px solid var(--border-light);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .stChatMessage:hover {
+        box-shadow: var(--shadow-medium);
+    }
+    
+    /* Chat message user */
+    .stChatMessage[data-testid*="user"] {
+        background: var(--gradient-primary);
+        color: white;
+        margin-left: 20%;
+    }
+    
+    /* Chat message assistant */
+    .stChatMessage[data-testid*="assistant"] {
+        background: var(--background-card);
+        margin-right: 20%;
+    }
+    
+    /* Expander styling */
+    .streamlit-expanderHeader {
+        background: var(--gradient-accent);
+        color: white;
+        border-radius: 10px;
+        padding: 0.75rem 1rem;
+        font-weight: 500;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .streamlit-expanderHeader:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 15px rgba(79, 172, 254, 0.3);
+    }
+    
+    .streamlit-expanderContent {
+        border: 1px solid var(--border-light);
+        border-radius: 0 0 12px 12px;
+        padding: 1rem;
+        background: var(--background-card);
+    }
+    
+    /* Slider styling */
+    .stSlider > div > div > div {
+        background: var(--gradient-primary);
+    }
+    
+    /* Checkbox styling */
+    .stCheckbox > label {
+        color: var(--text-primary);
+        font-weight: 500;
+    }
+    
+    /* Spinner styling */
+    .stSpinner > div {
+        border-top-color: var(--primary-color) !important;
+    }
+    
+    /* Divider styling */
+    .stDivider {
+        margin: 2rem 0;
+    }
+    
+    .stDivider > div {
+        background: var(--gradient-primary);
+        height: 2px;
+        border-radius: 1px;
+    }
+    
+    /* Caption styling */
+    .stCaption {
+        color: var(--text-secondary);
+        font-style: italic;
+        margin: 0.5rem 0;
+    }
+    
+    /* Subheader styling */
+    h2, h3 {
+        color: var(--text-primary);
+        font-weight: 600;
+        margin: 1.5rem 0 1rem 0;
+    }
+    
+    /* Custom section styling */
+    .section-header {
+        background: var(--gradient-primary);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin: 2rem 0 1rem 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .section-header::before {
+        content: '';
+        width: 4px;
+        height: 1.5rem;
+        background: var(--gradient-primary);
+        border-radius: 2px;
+    }
+    
+    /* Metrics styling */
+    .stMetric {
+        background: var(--background-card);
+        border-radius: 12px;
+        padding: 1rem;
+        box-shadow: var(--shadow-soft);
+        border: 1px solid var(--border-light);
+        text-align: center;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .stMetric:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-medium);
+    }
+    
+    /* Code block styling */
+    .stCodeBlock {
+        border-radius: 12px;
+        overflow: hidden;
+    }
+    
+    /* Sidebar header */
+    .css-1d391kg h2 {
+        color: var(--primary-color);
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+    
+    /* Loading animations */
+    @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
+    }
+    
+    .loading {
+        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    
+    /* Smooth transitions for all interactive elements */
+    * {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        background: var(--background-light);
+        border-radius: 4px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: var(--gradient-primary);
+        border-radius: 4px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+        background: var(--primary-dark);
+    }
+    
+    /* Responsive design */
+    @media (max-width: 768px) {
+        h1 {
+            font-size: 2rem !important;
+        }
+        
+        .stContainer > div {
+            padding: 1rem;
+            margin: 0.5rem 0;
+        }
+        
+        .stChatMessage[data-testid*="user"] {
+            margin-left: 10%;
+        }
+        
+        .stChatMessage[data-testid*="assistant"] {
+            margin-right: 10%;
+        }
+    }
+    
+    /* Focus indicators for accessibility */
+    *:focus {
+        outline: 2px solid var(--primary-color);
+        outline-offset: 2px;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+# ──────────────────────────────────────────────────────────────────────────────
 # Utility: Simple metadata extractors for resume fields
 # ──────────────────────────────────────────────────────────────────────────────
 EMAIL_RE = re.compile(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}")
@@ -134,7 +518,7 @@ def llm_answer(llm, question: str, context: str) -> str:
         lines = [ln.strip() for ln in context.splitlines() if ln.strip()]
         top = "\n".join(lines[:50])
         return (
-            "(No LLM configured; showing an extractive answer)\n\n" + top
+            "🤖 **AI Response** (Extractive mode - set GROQ_API_KEY for enhanced answers)\n\n" + top
         )
     prompt = (
         "You are a helpful recruiter assistant. Answer the question using the given resume excerpts.\n"
@@ -143,22 +527,33 @@ def llm_answer(llm, question: str, context: str) -> str:
         f"Question: {question}\n\nResume Excerpts:\n{context}\n"
     )
     resp = llm.invoke(prompt)
-    return getattr(resp, "content", str(resp))
+    return "🤖 **AI Response**\n\n" + getattr(resp, "content", str(resp))
 
 
 # ──────────────────────────────────────────────────────────────────────────────
 # Streamlit UI
 # ──────────────────────────────────────────────────────────────────────────────
-st.set_page_config(page_title="Resume RAG Chatbot", page_icon="📄", layout="wide")
-st.title("📄 Resume RAG Chatbot (LangChain + Streamlit)")
+st.set_page_config(
+    page_title="Resume RAG Chatbot", 
+    page_icon="📄", 
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
+# Apply custom CSS
+load_custom_css()
+
+# Header with emoji and styling
+st.markdown('<h1>📄 Resume RAG Chatbot</h1>', unsafe_allow_html=True)
+st.markdown('<div style="text-align: center; color: #718096; font-size: 1.1rem; margin-bottom: 2rem;">Powered by LangChain • Streamlit • AI</div>', unsafe_allow_html=True)
 
 with st.sidebar:
-    st.header("Settings")
-    st.write("Embeddings: sentence-transformers/all-MiniLM-L6-v2 (local)")
-    persist = st.checkbox("Persist FAISS index to ./index", value=False)
-    top_k = st.slider("Retriever top_k", 2, 10, 4)
+    st.markdown('<div class="section-header">⚙️ Settings</div>', unsafe_allow_html=True)
+    st.write("🔍 **Embeddings:** sentence-transformers/all-MiniLM-L6-v2 (local)")
+    persist = st.checkbox("💾 Persist FAISS index to ./index", value=False)
+    top_k = st.slider("📊 Retriever top_k", 2, 10, 4)
     st.divider()
-    st.caption("Optional: Set GROQ_API_KEY in your environment for LLM answers.")
+    st.markdown("💡 **Tip:** Set `GROQ_API_KEY` environment variable for enhanced LLM responses!", help="Without API key, the app uses extractive summaries")
 
 # Session state setup
 if "vectorstore" not in st.session_state:
@@ -170,16 +565,19 @@ if "raw_docs" not in st.session_state:
 if "chunks" not in st.session_state:
     st.session_state.chunks = []
 
-# Upload block
-st.subheader("1) Upload bulk resume PDFs")
+# Upload section with enhanced styling
+st.markdown('<div class="section-header">1️⃣ Upload Resume PDFs</div>', unsafe_allow_html=True)
 files = st.file_uploader(
-    "Upload one or more PDF resumes", type=["pdf"], accept_multiple_files=True
+    "📂 Drag and drop or browse PDF resumes", 
+    type=["pdf"], 
+    accept_multiple_files=True,
+    help="Upload multiple PDF resumes to build your candidate database"
 )
 
 col_a, col_b = st.columns([1,1])
 with col_a:
-    if st.button("Build/Update Index", type="primary", disabled=not files):
-        with st.spinner("Reading PDFs, splitting, embedding, and indexing..."):
+    if st.button("🚀 Build/Update Index", type="primary", disabled=not files):
+        with st.spinner("🔄 Processing PDFs, extracting text, and building vector index..."):
             raw_docs = load_pdfs_to_docs(files)
             st.session_state.raw_docs.extend(raw_docs)
 
@@ -208,23 +606,23 @@ with col_a:
                 st.session_state.vectorstore = vs
             else:
                 st.session_state.vectorstore = FAISS.from_documents(enriched, embed)
-        st.success(f"Indexed {len(st.session_state.chunks)} chunks from {len(st.session_state.registry)} candidate(s).")
+        st.success(f"✅ Successfully indexed {len(st.session_state.chunks)} chunks from {len(st.session_state.registry)} candidate(s)!")
 
 with col_b:
-    if st.button("Load persisted index from ./index", disabled=st.session_state.vectorstore is not None):
+    if st.button("📥 Load Saved Index", disabled=st.session_state.vectorstore is not None):
         try:
             embed = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
             st.session_state.vectorstore = FAISS.load_local("index", embed, allow_dangerous_deserialization=True)
-            st.success("Index loaded from ./index")
+            st.success("✅ Index loaded successfully from ./index")
         except Exception as e:
-            st.error(f"Failed to load index: {e}")
+            st.error(f"❌ Failed to load index: {e}")
 
 st.divider()
 
-# Candidate Browser
-st.subheader("2) Find a particular candidate")
-st.caption("Type a name, email, or phone. We'll fuzzy-match against the registry and embeddings.")
-query_cand = st.text_input("Search candidate")
+# Candidate search section
+st.markdown('<div class="section-header">2️⃣ Find Candidate</div>', unsafe_allow_html=True)
+st.caption("🔍 Search by name, email, or phone number. We'll match against registry and embeddings.")
+query_cand = st.text_input("🔎 Search candidate", placeholder="e.g., John Doe, john@email.com, +1234567890")
 
 sel_key = None
 if query_cand and st.session_state.registry:
@@ -242,20 +640,24 @@ if query_cand and st.session_state.registry:
                 exact_hits.append(key)
 
     if exact_hits:
-        sel_key = st.selectbox("Matching candidates", options=exact_hits, format_func=lambda k: f"{st.session_state.registry[k]['name']}  |  {st.session_state.registry[k]['email']}  |  {st.session_state.registry[k]['phone']}")
+        sel_key = st.selectbox(
+            "👤 Matching candidates", 
+            options=exact_hits, 
+            format_func=lambda k: f"👨‍💼 {st.session_state.registry[k]['name']} | 📧 {st.session_state.registry[k]['email']} | 📱 {st.session_state.registry[k]['phone']}"
+        )
     else:
-        st.info("No matching candidate detected yet. Try another query or upload more resumes.")
+        st.info("🔍 No matching candidates found. Try a different search term or upload more resumes.")
 
 if sel_key:
     info = st.session_state.registry[sel_key]
-    st.success(f"Selected: {info['name']} | {info['email']} | {info['phone']} | File: {info['source_file']}")
+    st.success(f"✅ **Selected:** 👤 {info['name']} | 📧 {info['email']} | 📱 {info['phone']} | 📄 {info['source_file']}")
 
 st.divider()
 
-# Chat Area
-st.subheader("3) Ask questions")
-st.caption("Ask general questions or about the selected candidate. If a candidate is selected, retrieval is filtered to that resume.")
-user_q = st.text_input("Your question", placeholder="e.g., Show projects of Priya, or What is John Doe's experience with React?")
+# Chat section
+st.markdown('<div class="section-header">3️⃣ Ask Questions</div>', unsafe_allow_html=True)
+st.caption("💬 Ask general questions or about the selected candidate. Candidate-specific queries are automatically filtered.")
+user_q = st.text_input("💭 Your question", placeholder="e.g., What is John's experience with React? Show me Priya's projects.")
 
 if "chat" not in st.session_state:
     st.session_state.chat = []
@@ -265,47 +667,84 @@ if user_q:
 
 llm = get_llm()
 
-if st.button("Ask") and user_q:
+if st.button("🎯 Ask Question", type="primary") and user_q:
     if st.session_state.vectorstore is None:
-        st.warning("Please upload PDFs and build the index first.")
+        st.warning("⚠️ Please upload PDFs and build the index first.")
     else:
-        if sel_key:
-            # Filter chunks by candidate_key, then run vector search on that subset via a metadata filter workaround.
-            # FAISS in LangChain doesn't support metadata filters natively; approximate by retrieving more and filtering.
-            retr = st.session_state.vectorstore.as_retriever(search_kwargs={"k": 12})
-            docs = retr.get_relevant_documents(user_q)
-            cand_docs = [d for d in docs if d.metadata.get("candidate_key") == sel_key]
-            if not cand_docs:
-                # Fallback: manually scan chunks for candidate_key and keyword
-                cand_docs = [d for d in st.session_state.chunks if d.metadata.get("candidate_key") == sel_key][:12]
-        else:
-            retr = st.session_state.vectorstore.as_retriever(search_kwargs={"k": top_k})
-            cand_docs = retr.get_relevant_documents(user_q)
+        with st.spinner("🧠 AI is thinking..."):
+            if sel_key:
+                # Filter chunks by candidate_key, then run vector search on that subset
+                retr = st.session_state.vectorstore.as_retriever(search_kwargs={"k": 12})
+                docs = retr.get_relevant_documents(user_q)
+                cand_docs = [d for d in docs if d.metadata.get("candidate_key") == sel_key]
+                if not cand_docs:
+                    # Fallback: manually scan chunks for candidate_key
+                    cand_docs = [d for d in st.session_state.chunks if d.metadata.get("candidate_key") == sel_key][:12]
+            else:
+                retr = st.session_state.vectorstore.as_retriever(search_kwargs={"k": top_k})
+                cand_docs = retr.get_relevant_documents(user_q)
 
-        context = "\n\n".join(
-            [f"[p{d.metadata.get('page', '?')}] {d.page_content[:1200]}" for d in cand_docs]
-        )
-        answer = llm_answer(llm, user_q, context)
-        st.session_state.chat.append({"role": "assistant", "content": answer, "sources": cand_docs})
+            context = "\n\n".join(
+                [f"[Page {d.metadata.get('page', '?')}] {d.page_content[:1200]}" for d in cand_docs]
+            )
+            answer = llm_answer(llm, user_q, context)
+            st.session_state.chat.append({"role": "assistant", "content": answer, "sources": cand_docs})
 
-# Display chat
-for turn in st.session_state.chat[-8:]:
+# Display chat with enhanced styling
+st.markdown('<div class="section-header">💬 Conversation</div>', unsafe_allow_html=True)
+
+for i, turn in enumerate(st.session_state.chat[-8:]):
     if turn["role"] == "user":
-        st.chat_message("user").write(turn["content"])
+        with st.chat_message("user", avatar="👤"):
+            st.markdown(f"**You:** {turn['content']}")
     else:
-        with st.chat_message("assistant"):
-            st.write(turn["content"])
+        with st.chat_message("assistant", avatar="🤖"):
+            st.markdown(turn["content"])
             if turn.get("sources"):
-                with st.expander("Show sources"):
+                with st.expander("📚 View Sources & References", expanded=False):
                     for i, d in enumerate(turn["sources"], start=1):
-                        meta = json.dumps({k:v for k,v in d.metadata.items() if k in ("source_file","page","candidate_key")})
-                        st.markdown(f"**Source {i}** — {meta}")
-                        st.text(d.page_content[:1500])
+                        meta = {k:v for k,v in d.metadata.items() if k in ("source_file","page","candidate_key")}
+                        st.markdown(f"**📄 Source {i}** — `{json.dumps(meta)}`")
+                        st.markdown(f"```\n{d.page_content[:1500]}{'...' if len(d.page_content) > 1500 else ''}\n```")
 
 st.divider()
 
-st.caption("Tips: Use the candidate search box to select a person first, then ask targeted questions. Set GROQ_API_KEY to enable LLM answers; otherwise the app returns extractive snippets.")
+# Enhanced tips section
+st.markdown('<div class="section-header">💡 Usage Tips</div>', unsafe_allow_html=True)
 
+tip_cols = st.columns(3)
+with tip_cols[0]:
+    st.markdown("""
+    **🎯 Candidate Search**
+    - Use the search box to find specific candidates
+    - Search by name, email, or phone number
+    - Select a candidate for targeted questions
+    """)
+
+with tip_cols[1]:
+    st.markdown("""
+    **💬 Smart Questions**
+    - Ask about skills, experience, projects
+    - Compare candidates: "Who has React experience?"
+    - Get summaries: "Tell me about John's background"
+    """)
+
+with tip_cols[2]:
+    st.markdown("""
+    **⚡ Performance**
+    - Set `GROQ_API_KEY` for AI-powered answers
+    - Use "Persist Index" to save processing time
+    - Adjust top_k in sidebar for retrieval depth
+    """)
+
+# Footer
+st.markdown("""
+---
+<div style="text-align: center; color: #718096; padding: 1rem;">
+    <p>Built with ❤️ using <strong>Streamlit</strong> • <strong>LangChain</strong> • <strong>FAISS</strong> • <strong>HuggingFace</strong></p>
+    <p style="font-size: 0.9rem;">🚀 Upload resumes → 🔍 Search candidates → 💬 Ask questions → 📊 Get insights</p>
+</div>
+""", unsafe_allow_html=True)
 
 # ──────────────────────────────────────────────────────────────────────────────
 # Notes
@@ -317,86 +756,3 @@ st.caption("Tips: Use the candidate search box to select a person first, then as
 # 3) Run: streamlit run app.py
 # 4) Upload bulk PDF resumes. Use the sidebar to persist/load the FAISS index.
 # 5) Search/select a candidate, then ask questions.
-
-
-
-
-
-# import streamlit as st
-# from pypdf import PdfReader
-# from langchain.text_splitter import RecursiveCharacterTextSplitter
-# from langchain.vectorstores import FAISS
-# from langchain_huggingface import HuggingFaceEmbeddings
-# from langchain.chains import RetrievalQA
-# from langchain_groq import ChatGroq
-
-# # -------------------------------
-# # Function to load and tag PDFs
-# # -------------------------------
-# def load_pdfs(uploaded_files):
-#     docs = []
-#     for file in uploaded_files:
-#         pdf_reader = PdfReader(file)
-#         candidate_name = file.name.replace(".pdf", "")  # ✅ use filename as candidate ID
-#         for page_num, page in enumerate(pdf_reader.pages, start=1):
-#             text = page.extract_text()
-#             if text:
-#                 docs.append({
-#                     "text": text,
-#                     "metadata": {"candidate": candidate_name, "page": page_num}
-#                 })
-#     return docs
-
-# # -------------------------------
-# # Streamlit App
-# # -------------------------------
-# st.title("📄 Resume RAG Chatbot with Candidate Search")
-
-# uploaded_files = st.file_uploader("Upload bulk resumes (PDFs)", type="pdf", accept_multiple_files=True)
-
-# if uploaded_files:
-#     with st.spinner("Processing resumes..."):
-#         docs = load_pdfs(uploaded_files)
-
-#         # Split into chunks
-#         text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
-#         all_chunks = []
-#         for d in docs:
-#             chunks = text_splitter.split_text(d["text"])
-#             for chunk in chunks:
-#                 all_chunks.append((chunk, d["metadata"]))
-
-#         # Embeddings
-#         embed = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
-
-#         # VectorDB with metadata
-#         texts, metadatas = zip(*all_chunks)
-#         vectordb = FAISS.from_texts(texts, embed, metadatas=metadatas)
-
-#         # Retriever
-#         retriever = vectordb.as_retriever(search_kwargs={"k": 5})
-
-#         # LLM
-#         llm = ChatGroq(model="mixtral-8x7b-32768", temperature=0)
-
-#         # RetrievalQA
-#         qa = RetrievalQA.from_chain_type(llm=llm, retriever=retriever, chain_type="stuff")
-
-#     st.success("Resumes processed successfully! ✅")
-
-#     query = st.text_input("Ask about a candidate (e.g., 'Show Priya's experience')")
-
-#     if query:
-#         with st.spinner("Fetching candidate details..."):
-#             # Force retrieval to focus on candidate name
-#             candidate_docs = retriever.invoke(query)
-#             if candidate_docs:
-#                 response = qa.run(query)
-#                 st.write(response)
-
-#                 # Show source info
-#                 st.markdown("### 📑 Sources:")
-#                 for d in candidate_docs:
-#                     st.write(f"Candidate: {d.metadata['candidate']}, Page: {d.metadata['page']}")
-#             else:
-#                 st.warning("❌ No matching candidate found. Try another name.")
