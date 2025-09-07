@@ -1,0 +1,36 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# Virtual environment
+.venv/
+env/
+venv/
+
+# Streamlit
+.streamlit/
+.streamlit/secrets.toml
+
+# FAISS index and embeddings
+index/
+*.faiss
+*.pkl
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Jupyter notebooks checkpoints
+.ipynb_checkpoints/
+
+# Environment / secrets
+.env
+.env.local
+.env.*
+*.env
